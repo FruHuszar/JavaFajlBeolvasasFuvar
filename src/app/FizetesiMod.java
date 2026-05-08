@@ -1,9 +1,9 @@
 package app;
 
 public enum FizetesiMod {
-    KÁRTYA,
-    KÉSZPÉNZ,
-    UTALÁS,
+    KARTYA,
+    KESZPENZ,
+    UTALAS,
     CSEKK,
     NINCS,
 }

@@ -6,9 +6,9 @@ public class Fuvar {
     private String rendszam;
     private int idoMp;
     private double osszegEuro;
-    private String fizetesiMod;
+    private FizetesiMod fizetesiMod;
 
-    public Fuvar(String rendszam, int idoMp, double osszegEuro, String fizetesiMod) {
+    public Fuvar(String rendszam, int idoMp, double osszegEuro, FizetesiMod fizetesiMod) {
         this.rendszam = rendszam;
         this.idoMp = idoMp;
         this.osszegEuro = osszegEuro;
@@ -21,7 +21,7 @@ public class Fuvar {
 
     public double getOsszegEuro() { return osszegEuro; }
 
-    public String getFizetesiMod() { return fizetesiMod; }
+    public FizetesiMod getFizetesiMod() { return fizetesiMod; }
 
     @Override
     public int hashCode() {

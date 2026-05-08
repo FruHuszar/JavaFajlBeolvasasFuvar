@@ -30,11 +30,22 @@ public class FajlBeolvasas {
             String rendszam = s[0];
             int idoMp = Integer.parseInt(s[1]);
             double osszegEuro = Double.parseDouble(s[2]);
-            String fizetesiMod = s[3];
+            FizetesiMod fizetesiMod = szovegEnumm(s[3]);
             
             Fuvar egyFuvar = new Fuvar(rendszam, idoMp, osszegEuro, fizetesiMod);
             fuvarlista.add(egyFuvar);
         }
+    }
+    
+        public static FizetesiMod szovegEnumm(String szoveg) {
+        return switch (szoveg) {
+            case "kártya" -> FizetesiMod.KARTYA;
+            case "készpénz" -> FizetesiMod.KESZPENZ;
+            case "utalás" -> FizetesiMod.UTALAS;
+            case "csekk" -> FizetesiMod.CSEKK;
+            case "-" -> FizetesiMod.NINCS;
+            default -> FizetesiMod.NINCS;
+        };
     }
     
     private static void osszesKiir() {
@@ -44,6 +55,13 @@ public class FajlBeolvasas {
     }
     
     public static void feladatok() {
-        //kód
+        int i = 0;
+        int N = fuvarlista.size();
+        while(i < N && true){
+            i++;
+        }
+        
+        String valasz = i<=N ? "Igen" : "Nem";
+        System.out.println("Végig tudott futni/Összesre igaz? " + valasz);
     }
 }
