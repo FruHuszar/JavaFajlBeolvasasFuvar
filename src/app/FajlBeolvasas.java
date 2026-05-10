@@ -16,27 +16,36 @@ public class FajlBeolvasas {
         Path path = Path.of("fuvarok.csv");
         beolvas(path);
         
-        feladat1(); //kész
+        System.out.println("1: Összes fuvar értéke?");
+        System.out.println(feladat1() + " €");
         System.out.println("");
         
-        feladat2();
+        System.out.println("2: Legdrágább fuvar rendszáma?");
+        System.out.println("Rendszám: " + feladat2());
         System.out.println("");
         
-        feladat3();
+        System.out.println("3: Legolcsóbb fuvar forintban?");
+        System.out.println(feladat3() + " Ft");
         System.out.println("");
         
-        feladat4();
+        System.out.println("4: Hány Kártyás fizetés volt?");
+        System.out.println(feladat4() + " db.");
         System.out.println("");
         
-        feladat5();
+        System.out.println("5: Minden fizetési mód meghatározott?");
+        String valasz = feladat5() ? "Igen." : "Nem.";
+        System.out.println(valasz);
         System.out.println("");
         
-        feladat6(); //kész
+        System.out.println("6: Hány db autó van a rendszerben?");
+        System.out.println(feladat6() + " db.");
         System.out.println("");
         
-        feladat7();
+        System.out.println("7: Hányféle Fizetési mód van?");
+        System.out.println(feladat7() + " féle.");
         System.out.println("");
         
+        System.out.println("8: Melyik autó mennyi fuvart teljesített?");
         feladat8();
         System.out.println("");
     }
@@ -73,75 +82,86 @@ public class FajlBeolvasas {
         }
     }
 
-    private static void feladat1() {
-        System.out.println("1: Összes fuvar értéke?");
+    private static double feladat1() {
         double eur = 0;
         for(Fuvar fuvar : fuvarlista){
             eur += fuvar.getOsszegEuro();
         }
-        System.out.println("Összes fuvar értéke: " + eur);
+        return eur;
     }
     
-    private static void feladat2() {
-        System.out.println("2: Legdrágább fuvar rendszáma?");
-        
-        String valasz = true ? "Igen" : "Nem";
-        System.out.println("Végig tudott futni/Összesre igaz? " + valasz);
-
+    private static String feladat2() {
+        int maxIndex = 0;
+        for (int i = 1; i < fuvarlista.size(); i++) {
+            if (fuvarlista.get(i).getOsszegEuro() > fuvarlista.get(maxIndex).getOsszegEuro()) {
+                maxIndex = i;
+            }
+        }
+        return fuvarlista.get(maxIndex).getRendszam();
     }
     
-    private static void feladat3() {
-        System.out.println("3: Legolcsóbb fuvar forintban?");
-        
-        String valasz = true ? "Igen" : "Nem";
-        System.out.println("Végig tudott futni/Összesre igaz? " + valasz);
-
+    private static double feladat3() {
+        double min = fuvarlista.get(0).getOsszegEuro();
+        for (Fuvar fuvar : fuvarlista) {
+            if (fuvar.getOsszegEuro() < min) {
+                min = fuvar.getOsszegEuro();
+            }
+        }
+        return min * 354; // Példa árfolyam: 354 Ft/EUR (20260510)
     }
     
-    private static void feladat4() {
-        System.out.println("4: Hány Kártáys fizetés volt?");
-        
-        String valasz = true ? "Igen" : "Nem";
-        System.out.println("Végig tudott futni/Összesre igaz? " + valasz);
-
+    private static int feladat4() {
+        int db = 0;
+        for (Fuvar fuvar : fuvarlista) {
+            if (fuvar.getFizetesiMod() == FizetesiMod.KARTYA) {
+                db++;
+            }
+        }
+        return db;
     }
     
-    private static void feladat5() {
-        System.out.println("5: Minden fzetési mód meghatározot?");
-        
-        String valasz = true ? "Igen" : "Nem";
-        System.out.println("Végig tudott futni/Összesre igaz? " + valasz);
-
+    private static boolean feladat5() {
+        boolean mindegyik = true;
+        for (Fuvar fuvar : fuvarlista) {
+            if (fuvar.getFizetesiMod() == FizetesiMod.NINCS) {
+                mindegyik = false;
+                break;
+            }
+        }
+        return mindegyik;
     }
     
-    private static void feladat6() {
-        System.out.println("6: Hány db autó van a rendszerben?");
-        
+    private static int feladat6() {
         Set<String> s = new HashSet<>();
-        
-        
         for(Fuvar fuvar : fuvarlista){
             s.add(fuvar.getRendszam());
         }
-        
-        System.out.println("Autók a rendszerben: " + s.size() + " db.");
-
+        return s.size();
     }
     
-    private static void feladat7() {
-        System.out.println("7: Hányféle Fizetési mód van?");
-        
-        String valasz = true ? "Igen" : "Nem";
-        System.out.println("Végig tudott futni/Összesre igaz? " + valasz);
-
+    private static int feladat7() {
+        Set<FizetesiMod> modok = new HashSet<>();
+        for (Fuvar fuvar : fuvarlista) {
+            modok.add(fuvar.getFizetesiMod());
+        }
+        return modok.size();
     }
     
     private static void feladat8() {
-        System.out.println("8: Melyk autó mennyi fuvart teljesített?");
-        
-        String valasz = true ? "Igen" : "Nem";
-        System.out.println("Végig tudott futni/Összesre igaz? " + valasz);
+        Set<String> rendszamok = new HashSet<>();
+        for (Fuvar f : fuvarlista) {
+            rendszamok.add(f.getRendszam());
+        }
 
+        for (String rsz : rendszamok) {
+            int db = 0;
+            for (Fuvar f : fuvarlista) {
+                if (f.getRendszam().equals(rsz)) {
+                    db++;
+                }
+            }
+            System.out.println(rsz + ": " + db + " fuvar");
+        }
     }
     
 }
