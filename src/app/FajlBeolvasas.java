@@ -4,10 +4,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+/**
+ * Info:
+ * Map: 8 feladat magyarázás:
+ * Az ertek++ (poszt-inkrementálás) a növelés előtti értéket adja vissza
+ * a put metódusnak, míg a ++ertek (pre-inkrementálás) előbb növeli az értéket,
+ * és már a módosított eredményt adja át a Map-nek.
+ * Ha meg akarjuk számolni egy kulcsból mennyi van pre-inkrementálással működik.
+ */
 public class FajlBeolvasas {
  
     private static List<Fuvar> fuvarlista = new ArrayList<>();
@@ -148,19 +158,21 @@ public class FajlBeolvasas {
     }
     
     private static void feladat8() {
-        Set<String> rendszamok = new HashSet<>();
-        for (Fuvar f : fuvarlista) {
-            rendszamok.add(f.getRendszam());
-        }
-
-        for (String rsz : rendszamok) {
-            int db = 0;
-            for (Fuvar f : fuvarlista) {
-                if (f.getRendszam().equals(rsz)) {
-                    db++;
-                }
+        Map<String, Integer> melymenny = new HashMap<>();
+        for (Fuvar fuvar : fuvarlista) {
+            String kulcs = fuvar.getRendszam();
+            if(melymenny.containsKey(kulcs)){
+                int ertek = melymenny.get(kulcs);
+                melymenny.put(kulcs, ++ertek);
+            }else{ 
+                melymenny.put(kulcs, 1);
             }
-            System.out.println(rsz + ": " + db + " fuvar");
+        }
+        
+        for (Map.Entry<String, Integer> entry : melymenny.entrySet()) {
+            String kulcs = entry.getKey();
+            Integer ertek = entry.getValue();
+            System.out.printf("[%s] = %d\n", kulcs, ertek);
         }
     }
     
